@@ -1,0 +1,6 @@
+{
+  "name": "Verdant - Plant Shopping & Care Management",
+  "description": "Modern botanical e-commerce and plant project management platform with task tracking, care analytics, priority planning, and an AI horticultural assistant.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
