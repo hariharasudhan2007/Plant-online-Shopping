@@ -1,7 +1,8 @@
 {
-  "name": "react-example",
+  "name": "verdant-plant-care-management",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Modern botanical e-commerce and plant project management platform with task tracking, care analytics, priority planning, and an AI horticultural assistant.",
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
