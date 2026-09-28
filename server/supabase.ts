@@ -3,9 +3,20 @@ import { Project, Task, CareLogEntry, PlantProduct } from "../src/types.js";
 
 let supabaseClient: SupabaseClient | null = null;
 
+function sanitizeUrl(rawUrl?: string): string | null {
+  if (!rawUrl) return null;
+  let clean = rawUrl.trim();
+  // Strip trailing /rest/v1 or /rest/v1/ if user entered the REST endpoint instead of project URL
+  clean = clean.replace(/\/rest\/v1\/?$/, "");
+  // Strip trailing slashes
+  clean = clean.replace(/\/+$/, "");
+  return clean;
+}
+
 export function getSupabase(): SupabaseClient | null {
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+  const url = sanitizeUrl(process.env.SUPABASE_URL);
+  const rawKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+  const key = rawKey ? rawKey.trim() : null;
 
   if (!url || !key) {
     return null;
@@ -31,7 +42,7 @@ export async function checkSupabaseConnection(): Promise<{
   message: string;
   tables?: string[];
 }> {
-  const url = process.env.SUPABASE_URL;
+  const url = sanitizeUrl(process.env.SUPABASE_URL);
   const hasServiceKey = Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY);
   const hasAnonKey = Boolean(process.env.SUPABASE_ANON_KEY);
 
@@ -126,11 +137,16 @@ export function rowToProject(row: any): Project {
 }
 
 export function taskToRow(t: Task) {
+  let dbCategory: string = t.category;
+  if (dbCategory === "Store Order") {
+    dbCategory = "Order Supplies";
+  }
+
   return {
     id: t.id,
     title: t.title,
     description: t.description || "",
-    category: t.category,
+    category: dbCategory,
     priority: t.priority,
     status: t.status,
     due_date: t.dueDate || "Today",
@@ -143,11 +159,16 @@ export function taskToRow(t: Task) {
 }
 
 export function rowToTask(row: any): Task {
+  let category = row.category;
+  if (category === "Order Supplies") {
+    category = "Store Order";
+  }
+
   return {
     id: row.id,
     title: row.title,
     description: row.description || "",
-    category: row.category,
+    category: category,
     priority: row.priority,
     status: row.status,
     dueDate: row.due_date || "Today",
