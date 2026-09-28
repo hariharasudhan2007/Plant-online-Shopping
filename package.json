@@ -1,22 +1,17 @@
 {
-  "name": "verdant-plant-care-management",
-  "private": true,
+  "name": "my-app",
   "version": "1.0.0",
-  "description": "Modern botanical e-commerce and plant project management platform with task tracking, care analytics, priority planning, and an AI horticultural assistant.",
   "type": "module",
- 
-"scripts": {
-  "prestart": "npm run build"
-},
- 
-{
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
   "dependencies": {
     "express": "^4.22.3"
-  }, 
+  },
   "devDependencies": {
     "typescript": "^5.8.3",
     "vite": "^6.2.3"
   }
 }
-  }
-
